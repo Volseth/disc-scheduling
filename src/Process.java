@@ -7,7 +7,7 @@ public class Process {
     private int traveledDistance;
     private int requestedPos;
 
-    public Process(int realTimePriority,int requestedPos){
+    public Process(int requestedPos, int realTimePriority){
         this.inputTime=0;
         this.realTimePriority=realTimePriority;
         this.traveledDistance=0;
@@ -28,6 +28,10 @@ public class Process {
 
     public int getRequestedPos() {
         return requestedPos;
+    }
+    public int calculateDistance(int actualLocation) {
+        traveledDistance = Math.abs(actualLocation - requestedPos);
+        return traveledDistance;
     }
 
     public void setInputTime(int inputTime) {
@@ -61,15 +65,13 @@ public class Process {
         if (o == null || getClass() != o.getClass()) return false;
         Process process = (Process) o;
         return inputTime == process.inputTime &&
-                realTimePriority == process.realTimePriority &&
-                traveledDistance == process.traveledDistance &&
                 requestedPos == process.requestedPos;
     }
 
     @Override
     public int hashCode() {
 
-        return Objects.hash(inputTime, realTimePriority, traveledDistance, requestedPos);
+        return Objects.hash(inputTime,requestedPos);
     }
 
     @Override

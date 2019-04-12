@@ -4,7 +4,7 @@ import java.util.ArrayList;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-class FCFSTest {
+class SSTFTest {
 
     @Test
     void calculateTotalDistance() {
@@ -18,7 +18,8 @@ class FCFSTest {
         processes.add(new Process(65, 0));
         processes.add(new Process(67, 0));
         Disc disc = new Disc(200,53);
-        DiscScheduling discScheduling=new FCFS(disc,processes);
-        assertEquals(640,discScheduling.calculateTotalDistance());
+        DiscScheduling discScheduling=new SSTF(disc,processes);
+        assertEquals(236,discScheduling.calculateTotalDistance());
+
     }
 }

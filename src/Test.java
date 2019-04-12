@@ -1,3 +1,4 @@
+import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.Scanner;
@@ -22,6 +23,7 @@ public class Test {
         int priority= scanner.nextInt();
         HashSet<Process> discRequests=new HashSet<>();
         fillCollectionWithExampleData(discRequests,request,cylinders,inputTime,priority);
+        ArrayList<Process> discRequestsForSimulation= new ArrayList<>(discRequests);
         Iterator iterator=discRequests.iterator();
         while(iterator.hasNext()){
             Process p= (Process) iterator.next();
