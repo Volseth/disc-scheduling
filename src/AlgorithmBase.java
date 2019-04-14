@@ -1,6 +1,6 @@
 import java.util.ArrayList;
 
-public abstract class AlgorithmBase {
+public class AlgorithmBase {
     Disc disc;
     ArrayList<Process> processes;
     int clock=0;
@@ -16,6 +16,13 @@ public abstract class AlgorithmBase {
             }
         }
         return nearest;
+    }
+    public void clean(){
+        clock=0;
+        for (Process p:processes){
+            p.setTraveledDistance(0);
+        }
+        disc.setActualPos(disc.getStartingPos());
     }
 
 }

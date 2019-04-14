@@ -6,7 +6,7 @@ public class Disc {
 
     public Disc(int cylinders){
         this.cylinders=cylinders;
-        this.startingPos=0;
+        this.startingPos=cylinders/2;
         this.actualPos=startingPos;
     }
     public Disc(int cylinders, int startingPos){
@@ -21,6 +21,10 @@ public class Disc {
 
     public int getActualPos() {
         return actualPos;
+    }
+
+    public int getCylinders() {
+        return cylinders;
     }
 
     public void setActualPos(int actualPos) {

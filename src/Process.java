@@ -1,3 +1,4 @@
+import java.util.ArrayList;
 import java.util.Objects;
 import java.util.Random;
 
@@ -7,9 +8,9 @@ public class Process {
     private int traveledDistance;
     private int requestedPos;
 
-    public Process(int requestedPos, int realTimePriority){
-        this.inputTime=0;
-        this.realTimePriority=realTimePriority;
+    public Process(int requestedPos, int inputTime){
+        this.inputTime=inputTime;
+        this.realTimePriority=0;
         this.traveledDistance=0;
         this.requestedPos=requestedPos;
     }
@@ -20,10 +21,6 @@ public class Process {
 
     public int getRealTimePriority() {
         return realTimePriority;
-    }
-
-    public int getTraveledDistance() {
-        return traveledDistance;
     }
 
     public int getRequestedPos() {
@@ -52,10 +49,10 @@ public class Process {
 
     public Process(int maxRequestedPos, int maxInputTime, int realTimePriority){
         Random r= new Random();
-        this.requestedPos=r.nextInt(maxRequestedPos);
+        this.requestedPos=r.nextInt(maxRequestedPos)+1;
         this.inputTime=r.nextInt(maxInputTime);
         if(realTimePriority==0){this.realTimePriority=0;}
-        else{ this.realTimePriority=r.nextInt(realTimePriority);}
+        else{ this.realTimePriority=r.nextInt(realTimePriority)+1;}
 
     }
 
@@ -76,10 +73,6 @@ public class Process {
 
     @Override
     public String toString() {
-        return "Process{" +
-                "inputTime=" + inputTime +
-                ", realTimePriority=" + realTimePriority +
-                ", traveledDistance=" + traveledDistance +
-                ", requestedPos=" + requestedPos;
+        return inputTime+";"+requestedPos+";"+realTimePriority;
     }
 }
