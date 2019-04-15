@@ -42,21 +42,67 @@ public class FDSCAN extends AlgorithmBase implements DiscScheduling  {
         return nearest;
     }
 
-    @Override
+    @Override@SuppressWarnings("Duplicates")
     public int calculateTotalDistance() {
         ArrayList<Process> executionList=new ArrayList<>(processes);
         splitList();
         executionList.sort(Comparator.comparing(Process::getInputTime));
+        Comparator priorityComp=Comparator.comparing(Process::getRealTimePriority).reversed();
 
-        leftSide.sort(Comparator.comparing(Process::getRequestedPos).reversed());
-        rightSide.sort(Comparator.comparing(Process::getRequestedPos));
+        leftSide.sort(Comparator.comparing(Process::getRequestedPos).thenComparing(Process::getRealTimePriority).reversed());
+        rightSide.sort(Comparator.comparing(Process::getRequestedPos).thenComparing(priorityComp));
 
         clock=executionList.get(0).getInputTime();
-        Process temp=findNearestProcessWithPriority(executionList);
+        Process temp;
+        Process priorityTemp=findNearestProcessWithPriority(executionList);
         int totalMoves=0;
 
-        boolean direction=temp.getRequestedPos()>disc.getStartingPos(); //False - LEFT , TRUE-RIGHT
-        boolean first=direction;
+        boolean direction=priorityTemp.getRequestedPos()>disc.getStartingPos(); //False - LEFT , TRUE-RIGHT
+
+        while(!executionList.isEmpty()) {
+            clock = executionList.get(0).getInputTime();
+            temp = findNearestProcess(executionList);
+            priorityTemp = findNearestProcessWithPriority(executionList);
+            if (leftSide.contains(priorityTemp) && !direction) {
+                while (!leftSide.isEmpty()) {
+                    leftSide.sort(Comparator.comparing(Process::getInputTime).thenComparing(Process::getRequestedPos).reversed());
+                    Process ongoing = leftSide.get(0);
+                    if (ongoing.getInputTime() <= clock && priorityTemp.equals(temp)) {
+                        totalMoves += ongoing.calculateDistance(disc.getActualPos());
+                        disc.setActualPos(ongoing.getRequestedPos());
+                        leftSide.remove(ongoing);
+                        executionList.remove(ongoing);
+                    } else {
+                        leftSide.remove(ongoing);
+                        rightSide.add(ongoing);
+                    }
+                }
+                if (!rightSide.isEmpty()) {
+                    totalMoves += disc.getActualPos() - 1;
+                }
+                disc.setActualPos(1);
+                direction = true;
+            } else {
+                while (!rightSide.isEmpty() && direction) {
+                    rightSide.sort(Comparator.comparing(Process::getInputTime).thenComparing(Process::getRequestedPos));
+                    Process ongoing = rightSide.get(0);
+                    if (ongoing.getInputTime() <= clock && priorityTemp.equals(temp)) {
+                        totalMoves += ongoing.calculateDistance(disc.getActualPos());
+                        disc.setActualPos(ongoing.getRequestedPos());
+                        rightSide.remove(ongoing);
+                        executionList.remove(ongoing);
+                    } else {
+                        rightSide.remove(ongoing);
+                        leftSide.add(ongoing);
+                    }
+                }
+                if (!leftSide.isEmpty()) {
+                    totalMoves += (disc.getCylinders()) - (disc.getActualPos());
+                }
+                disc.setActualPos(disc.getCylinders());
+                direction = false;
+            }
+        }
         return totalMoves;
     }
 }

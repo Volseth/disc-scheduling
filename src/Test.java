@@ -51,6 +51,7 @@ public class Test {
         CSCAN discScheduling4=new CSCAN(disc,discRequestsForSimulation);
         EDFFCFS discScheduling5=new EDFFCFS(disc,discRequestsForSimulation);
         EDFSSTF discScheduling6=new EDFSSTF(disc,discRequestsForSimulation);
+        FDSCAN discScheduling7=new FDSCAN(disc,discRequestsForSimulation);
         FDCSCAN discScheduling8=new FDCSCAN(disc,discRequestsForSimulation);
         saveCollection(discRequestsForSimulation);
         System.out.println("Ilość przemiesczeń FCFS:"+discScheduling.calculateTotalDistance());
@@ -65,6 +66,8 @@ public class Test {
         discScheduling5.clean();
         System.out.println("Ilość przemiesczeń EDF-SSTF:"+discScheduling6.calculateTotalDistance());
         discScheduling6.clean();
+        //System.out.println("Ilość przemiesczeń FD-SCAN:"+discScheduling8.calculateTotalDistance());
+        //discScheduling7.clean();
         System.out.println("Ilość przemiesczeń FD-CSCAN:"+discScheduling8.calculateTotalDistance());
         discScheduling8.clean();
 
